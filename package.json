@@ -4,11 +4,6 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  },
   "scripts": {
     "dev": "npx nodemon",
     "build": "rimraf ./build && npx tsc",
