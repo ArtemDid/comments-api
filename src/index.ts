@@ -1,6 +1,6 @@
 import { analitics } from './modules/analitics.js';
 
-const temp: string = 'Hello Node';
+const temp = 'Hello Node';
 
 console.log('Ura', temp);
 
