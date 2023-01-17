@@ -1,0 +1,14 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": ["plugin:@typescript-eslint/recommended"],
+  "plugins": ["prettier"],
+  "parserOptions": {
+    "ecmaVersion": "ESNext",
+    "sourceType": "module"
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off"
+  }
+}
