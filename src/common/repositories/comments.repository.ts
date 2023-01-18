@@ -64,6 +64,10 @@ const getListDomainsByPublisher = async (username: string): Promise<Array<any>> 
   return db.select('*').from('accounts').where({ username }).returning('*');
 };
 
+const getListDomainsByPublisher2 = async (publisher_id: number): Promise<Array<any>> => {
+  return db.select('*').from('status_domain').where({ publisher_id }).returning('*');
+};
+
 // const getListUrlsByDomain = async (
 //   tableName: string,
 //   limit: number,
@@ -101,4 +105,5 @@ const getListDomainsByPublisher = async (username: string): Promise<Array<any>> 
 
 export const urlsRepository = {
   getListDomainsByPublisher,
+  getListDomainsByPublisher2,
 };
