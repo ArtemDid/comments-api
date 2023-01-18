@@ -1,9 +1,11 @@
-// const Knex = require('knex');
-require('dotenv').config({ path: '.env' });
+import type { Knex } from 'knex';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '.env' });
 
 const { DB_HOST, DB_PORT, DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
 
-const config: { [key: string]: any } = {
+const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'postgresql',
     connection: {
