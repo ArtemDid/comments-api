@@ -1,7 +1,7 @@
 import './common/config';
 import { buildApp } from './modules/web/app';
 import { getLogger } from './common/logging';
-// import { runMigrations } from './common/db/migrations';
+import { runMigrations } from './common/db/migrations';
 import { APP_TYPE } from './common/constants';
 // import { createSimpleHealthCheckApp } from './modules/common/routes/healthcheck.routes';
 import { Server } from 'http';
@@ -10,7 +10,7 @@ import * as express from 'express';
 
 require('express-async-errors');
 
-const { ENVIRONMENT, PORT } = process.env;
+const { ENVIRONMENT, PORT, AUTO_MIGRATION } = process.env;
 let _server: Server = null;
 
 async function init() {
@@ -27,7 +27,7 @@ async function init() {
 
   switch (process.env.APP_TYPE) {
     case APP_TYPE.API:
-      // await runMigrations();
+      if (AUTO_MIGRATION) await runMigrations();
       serverApp = buildApp();
       break;
   }
