@@ -4,7 +4,7 @@ import { urlsRepository } from '../../../common/repositories/comments.repository
 // import { IDomainDB } from '../../../common/db/interfaces/domain.interface';
 
 const getStatusByPublisher = async (req: ExpressRequest, res: ExpressResponse) => {
-  const statusByPublisher: Array<any> = await urlsRepository.getListDomainsByPublisher('sgdgdf');
+  const statusByPublisher: Array<any> = await urlsRepository.getListDomainsByPublisher('asfs');
 
   res.json({
     status: statusByPublisher,
