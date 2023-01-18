@@ -13,7 +13,7 @@ export const getKnexConfig = () => ({
   },
   migrations: {
     tableName: 'migrations',
-    extension: 'ts',
+    extension: 'js',
   },
 });
 
