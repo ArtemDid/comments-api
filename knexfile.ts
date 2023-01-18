@@ -3,20 +3,15 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env' });
 
-const { DB_HOST, DB_PORT, DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
+const { PG_CONNECTION_STRING, DB_HOST, DB_PORT, DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
 
 const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'postgresql',
-    connection: {
-      host: DB_HOST,
-      port: parseInt(DB_PORT as string, 10) || 5432,
-      user: DB_USERNAME,
-      password: DB_PASSWORD,
-      database: DB_NAME,
-    },
+    connection: PG_CONNECTION_STRING,
     pool: {
-      max: 1,
+      max: 10,
+      min: 2,
     },
     migrations: {
       tableName: 'migrations',
@@ -26,15 +21,10 @@ const config: { [key: string]: Knex.Config } = {
 
   production: {
     client: 'postgresql',
-    connection: {
-      host: DB_HOST,
-      port: parseInt(DB_PORT as string, 10) || 5432,
-      user: DB_USERNAME,
-      password: DB_PASSWORD,
-      database: DB_NAME,
-    },
+    connection: PG_CONNECTION_STRING,
     pool: {
-      max: 1,
+      max: 10,
+      min: 2,
     },
     migrations: {
       tableName: 'migrations',
