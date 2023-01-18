@@ -27,7 +27,7 @@ async function init() {
 
   switch (process.env.APP_TYPE) {
     case APP_TYPE.API:
-      if (AUTO_MIGRATION) await runMigrations();
+      if (+AUTO_MIGRATION) await runMigrations();
       serverApp = buildApp();
       break;
   }

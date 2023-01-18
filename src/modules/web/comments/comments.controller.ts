@@ -5,9 +5,11 @@ import { urlsRepository } from '../../../common/repositories/comments.repository
 
 const getStatusByPublisher = async (req: ExpressRequest, res: ExpressResponse) => {
   const statusByPublisher: Array<any> = await urlsRepository.getListDomainsByPublisher('asfs');
+  const statusByPublisher2: Array<any> = await urlsRepository.getListDomainsByPublisher2(1);
 
   res.json({
     status: statusByPublisher,
+    domain: statusByPublisher2,
   });
 };
 
