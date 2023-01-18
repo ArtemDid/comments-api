@@ -1,7 +1,5 @@
 // const Knex = require('knex');
-import dotenv from 'dotenv';
-
-dotenv.config({ path: '.env' });
+require('dotenv').config({ path: '.env' });
 
 const { DB_HOST, DB_PORT, DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
 
