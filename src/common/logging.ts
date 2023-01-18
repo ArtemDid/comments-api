@@ -1,6 +1,6 @@
 import Logger, { createLogger } from 'bunyan';
-
 const pkgInfo = require('../../package.json');
+
 const { ENVIRONMENT, LOG_NAME_SERVICE = 'comments' } = process.env;
 
 let __logger: Logger = null;
