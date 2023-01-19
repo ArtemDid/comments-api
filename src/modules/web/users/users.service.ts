@@ -27,7 +27,6 @@ const createUser = async (data: any, res: ExpressResponse) => {
 
 const loginUser = async (data: any, res: ExpressResponse) => {
   const { user_name, email } = data;
-  const log = getLogger();
 
   const user: Array<IUserDB> = await urlsRepository.getUserByEmailName(email, user_name);
 
