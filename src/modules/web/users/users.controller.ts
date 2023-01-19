@@ -7,13 +7,13 @@ import { usersService } from './users.service';
 const createUser = async (req: ExpressRequest, res: ExpressResponse) => {
   const result = await usersService.createUser(req.query, res);
 
-  return res.status(result.status).json({ result });
+  return res.status(result.status).json(result);
 };
 
 const login = async (req: ExpressRequest, res: ExpressResponse) => {
   const result = await usersService.loginUser(req.query, res);
 
-  return res.status(result.status).json({ result });
+  return res.status(result.status).json(result);
 };
 
 export const UsersController = {

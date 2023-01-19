@@ -26,11 +26,12 @@ const insertUser = async (data: IUserDB): Promise<Array<IUserDB>> => {
   return db('users').insert(data).returning('*');
 };
 
-const getListDomainsByPublisher2 = async (publisher_id: number): Promise<Array<any>> => {
-  return db.select('*').from('status_domain').where({ publisher_id }).returning('*');
+const getUserById = async (id: number): Promise<Array<IUserDB>> => {
+  return db.select('*').from('users').where({ id }).returning('*');
 };
 
 export const urlsRepository = {
   getUserByEmailName,
   insertUser,
+  getUserById,
 };
