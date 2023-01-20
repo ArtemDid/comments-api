@@ -27,7 +27,7 @@ export const authMiddleware = async (req: ExpressRequest, res: ExpressResponse, 
       return { status: 401, message: `The credentials is incorrect` };
     }
 
-    req.user = { id };
+    req.users_id = id;
     next();
   } catch (error) {
     return res.status(400).json({ message: error, success: false });

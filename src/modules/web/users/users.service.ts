@@ -22,7 +22,7 @@ const createUser = async (data: any, res: ExpressResponse) => {
 
   const token: string = generateToken(newUser[0].id);
 
-  return { status: 200, token };
+  return { status: 200, token, name: newUser[0].user_name, email: newUser[0].email };
 };
 
 const loginUser = async (data: any, res: ExpressResponse) => {
@@ -36,7 +36,7 @@ const loginUser = async (data: any, res: ExpressResponse) => {
 
   const token: string = generateToken(user[0].id);
 
-  return { status: 200, token };
+  return { status: 200, token, name: user[0].user_name, email: user[0].email };
 };
 
 export const usersService = {

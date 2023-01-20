@@ -1,18 +1,27 @@
 import { ExpressRequest, ExpressResponse } from '../../../common/types';
 // import { getDomainsQueue } from '../../../queues/domains.queue';
-import { urlsRepository } from '../../../common/repositories/comments.repository';
+import { commentsService } from './comments.service';
 // import { IDomainDB } from '../../../common/db/interfaces/domain.interface';
 
-const getStatusByPublisher = async (req: ExpressRequest, res: ExpressResponse) => {
-  const statusByPublisher: Array<any> = await urlsRepository.getListDomainsByPublisher('asfs');
-  const statusByPublisher2: Array<any> = await urlsRepository.getListDomainsByPublisher2(1);
+const postComment = async (req: ExpressRequest, res: ExpressResponse) => {
+  const { totalCount, comments } = await commentsService.insertComment({ ...req.query, users_id: req.users_id });
 
-  res.json({
-    status: statusByPublisher,
-    domain: statusByPublisher2,
+  return res.status(200).json({
+    total_count: totalCount ?? 0,
+    urls: comments ?? [],
   });
 };
 
-export const CrawlerController = {
-  getStatusByPublisher,
+const getComment = async (req: ExpressRequest, res: ExpressResponse) => {
+  const { totalCount, comments } = await commentsService.getComments(req.query);
+
+  return res.status(200).json({
+    total_count: totalCount ?? 0,
+    urls: comments ?? [],
+  });
+};
+
+export const CommentsController = {
+  postComment,
+  getComment,
 };

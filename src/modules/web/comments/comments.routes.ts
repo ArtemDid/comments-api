@@ -1,10 +1,14 @@
 import { Router } from 'express';
-import { CrawlerController } from './comments.controller';
+import { CommentsController } from './comments.controller';
 import { authMiddleware } from './middlewares/comments.auth';
+import { validateSchema } from '../../../common/middlewares/validate';
+import { userSchema } from './middlewares/comments.schema';
 
-export const createCrawlerRouter = () => {
+export const createCommentsRouter = () => {
   const router = Router();
-  router.get('/', authMiddleware, CrawlerController.getStatusByPublisher);
+  router.post('/', validateSchema(userSchema), authMiddleware, CommentsController.postComment);
+  router.get('/', CommentsController.getComment);
+
   // router.get('/publisher/:publisher_id/status', CrawlerController.getStatusByPublisher);
   // router.get('/publisher/:publisher_id', CrawlerController.listCrawlingUrlsByPublisher);
 
