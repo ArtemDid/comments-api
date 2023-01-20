@@ -1,7 +1,7 @@
 import { verifyToken } from '../../../common/utils/token.utils';
 import { ExpressRequest, ExpressResponse, ExpressNextFunction } from '../../../../common/types';
 import { IUserDB } from '../../users/users.types';
-import { urlsRepository } from '../../users/users.repository';
+import { usersRepository } from '../../users/users.repository';
 
 export const authMiddleware = async (req: ExpressRequest, res: ExpressResponse, next: ExpressNextFunction) => {
   if (process.env.SKIP_AUTH) return next();
@@ -20,12 +20,6 @@ export const authMiddleware = async (req: ExpressRequest, res: ExpressResponse, 
   }
   try {
     const { id } = (await verifyToken(token)) as { id: number };
-
-    const user: Array<IUserDB> = await urlsRepository.getUserById(id);
-
-    if (!user.length) {
-      return { status: 401, message: `The credentials is incorrect` };
-    }
 
     req.users_id = id;
     next();

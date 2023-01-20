@@ -1,6 +1,6 @@
 import { getLogger } from '../../../common/logging';
 import { APIError, HttpStatusCode } from '../../../common/errors';
-import { urlsRepository } from './users.repository';
+import { usersRepository } from './users.repository';
 import { IUserDB } from './users.types';
 import { ExpressResponse } from 'common/types';
 import { generateToken } from '../../common/utils/token.utils';
@@ -9,7 +9,7 @@ const createUser = async (data: any, res: ExpressResponse) => {
   const { user_name, email, home_page } = data;
   const log = getLogger();
 
-  const user: Array<IUserDB> = await urlsRepository.getUserByEmailName(email);
+  const user: Array<IUserDB> = await usersRepository.getUserByEmailName(email);
 
   if (user.length) {
     if (user[0].email === email) {
@@ -17,7 +17,7 @@ const createUser = async (data: any, res: ExpressResponse) => {
     }
   }
 
-  const newUser: Array<IUserDB> = await urlsRepository.insertUser(data);
+  const newUser: Array<IUserDB> = await usersRepository.insertUser(data);
   log.info(`User with email: ${email} was created`);
 
   const token: string = generateToken(newUser[0].id);
@@ -28,7 +28,7 @@ const createUser = async (data: any, res: ExpressResponse) => {
 const loginUser = async (data: any, res: ExpressResponse) => {
   const { user_name, email } = data;
 
-  const user: Array<IUserDB> = await urlsRepository.getUserByEmailName(email, user_name);
+  const user: Array<IUserDB> = await usersRepository.getUserByEmailName(email, user_name);
 
   if (!user.length) {
     return { status: 400, message: `The credentials ${user_name} is incorrect` };

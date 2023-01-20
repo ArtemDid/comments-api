@@ -7,7 +7,7 @@ import { userSchema } from './middlewares/comments.schema';
 export const createCommentsRouter = () => {
   const router = Router();
   router.post('/', validateSchema(userSchema), authMiddleware, CommentsController.postComment);
-  router.get('/', CommentsController.getComment);
+  router.get('/', authMiddleware, CommentsController.getComment);
 
   // router.get('/publisher/:publisher_id/status', CrawlerController.getStatusByPublisher);
   // router.get('/publisher/:publisher_id', CrawlerController.listCrawlingUrlsByPublisher);

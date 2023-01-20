@@ -45,7 +45,19 @@ const getComments = async (
   const totalCount: number = ((await db('comments').clone().count('*', { as: 'count' }).first()) as { count: number })
     .count;
 
-  const comments: Array<ICommentDB> = await db('comments').select('*').limit(limit).offset(offset);
+  const comments: Array<ICommentDB> = await db('comments')
+    .select(
+      'comments.id',
+      'comments.parent_id',
+      'comments.text',
+      'comments.created_at',
+      'comments.updated_at',
+      'users.user_name',
+      'users.email',
+    )
+    .innerJoin('users', 'users.id', 'comments.users_id')
+    .limit(limit)
+    .offset(offset);
 
   return { totalCount, comments };
 };
