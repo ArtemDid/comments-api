@@ -5,4 +5,5 @@ export interface ICommentDB {
   text: string;
   created_at?: string;
   updated_at?: string;
+  childrens?: any;
 }

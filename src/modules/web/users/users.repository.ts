@@ -30,7 +30,7 @@ const getUserById = async (id: number): Promise<Array<IUserDB>> => {
   return db.select('*').from('users').where({ id }).returning('*');
 };
 
-export const urlsRepository = {
+export const usersRepository = {
   getUserByEmailName,
   insertUser,
   getUserById,
