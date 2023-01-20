@@ -6,9 +6,7 @@ export type ExpressNextFunction = NextFunction;
 
 export interface ExpressRequest extends Request {
   log?: Logger;
-  user?: {
-    id: number;
-  };
+  users_id?: number;
   auth?: {
     iss: string;
     sub: string;

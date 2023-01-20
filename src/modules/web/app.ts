@@ -4,7 +4,7 @@ import { createRequestLogger } from '../../common/middlewares/logger';
 import cors from 'cors';
 import { configureHealthCheckRouter } from '../common/routes/healthcheck.routes';
 import { errorHandlerMiddleware } from '../../common/middlewares/error.middleware';
-import { createCrawlerRouter } from './comments/comments.routes';
+import { createCommentsRouter } from './comments/comments.routes';
 import { createUsersRouter } from './users/users.routes';
 
 export function buildApp(): express.Application {
@@ -23,7 +23,7 @@ export function buildApp(): express.Application {
 
 function configureApiRoutes(): Router {
   const router = Router();
-  router.use('/comments', createCrawlerRouter());
+  router.use('/comments', createCommentsRouter());
   router.use('/users', createUsersRouter());
 
   return router;
