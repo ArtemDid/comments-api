@@ -21,6 +21,10 @@ export const authMiddleware = async (req: ExpressRequest, res: ExpressResponse, 
   try {
     const { id } = (await verifyToken(token)) as { id: number };
 
+    if (!id) {
+      return { status: 401, message: `The credentials is incorrect` };
+    }
+
     req.users_id = id;
     next();
   } catch (error) {

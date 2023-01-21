@@ -22,20 +22,10 @@ type DataUrlsType = {
 //     .returning('*');
 // };
 
-const insertComment = async (
-  data: ICommentDB,
-  limit: number,
-  offset: number,
-): Promise<{ totalCount: number; comments: Array<ICommentDB> }> => {
+const insertComment = async (data: ICommentDB): Promise<{ totalCount: number; comments: Array<ICommentDB> }> => {
   const log = getLogger();
 
-  return db('comments')
-    .insert(data)
-    .then(async () => {
-      log.info(`Comment was created`);
-
-      return getComments(limit, offset);
-    });
+  return db('comments').insert(data);
 };
 
 const getComments = async (
@@ -58,6 +48,8 @@ const getComments = async (
     .innerJoin('users', 'users.id', 'comments.users_id')
     .limit(limit)
     .offset(offset);
+
+  console.log(comments);
 
   return { totalCount, comments };
 };
