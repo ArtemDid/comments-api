@@ -1,15 +1,5 @@
-// import * as _ from 'lodash';
 import { IUserDB } from './users.types';
-// import { IUrlDB } from '../db/interfaces/url.interface';
 import { db } from '../../../common/db/knex';
-// import { urlsRedisClient } from '../db/redis';
-import { getLogger } from '../../../common/logging';
-
-type DataUrlsType = {
-  url: string;
-  domain_id: number;
-  is_has_asin: number;
-};
 
 const getUserByEmailName = async (email: string, user_name?: string): Promise<Array<IUserDB>> => {
   return db

@@ -3,9 +3,7 @@ import { buildApp } from './modules/web/app';
 import { getLogger } from './common/logging';
 import { runMigrations } from './common/db/migrations';
 import { APP_TYPE } from './common/constants';
-// import { createSimpleHealthCheckApp } from './modules/common/routes/healthcheck.routes';
 import { Server } from 'http';
-// import { buildWorker } from './modules/worker/urls.worker';
 import * as express from 'express';
 
 require('express-async-errors');
