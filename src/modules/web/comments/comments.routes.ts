@@ -8,9 +8,5 @@ export const createCommentsRouter = () => {
   const router = Router();
   router.post('/', validateSchema(commentSchema), authMiddleware, CommentsController.postComment);
   router.get('/', authMiddleware, CommentsController.getComment);
-
-  // router.get('/publisher/:publisher_id/status', CrawlerController.getStatusByPublisher);
-  // router.get('/publisher/:publisher_id', CrawlerController.listCrawlingUrlsByPublisher);
-
   return router;
 };

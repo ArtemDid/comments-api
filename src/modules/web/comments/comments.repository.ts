@@ -1,19 +1,7 @@
-// import * as _ from 'lodash';
-// import { IUserDB } from './users.types';
 import { ICommentDB } from './comments.types';
 import { db } from '../../../common/db/knex';
-// import { urlsRedisClient } from '../db/redis';
-import { getLogger } from '../../../common/logging';
-
-type DataUrlsType = {
-  url: string;
-  domain_id: number;
-  is_has_asin: number;
-};
 
 const insertComment = async (data: ICommentDB): Promise<{ totalCount: number; comments: Array<ICommentDB> }> => {
-  const log = getLogger();
-
   return db('comments').insert(data);
 };
 
@@ -38,14 +26,8 @@ const getComments = async (
     .limit(limit)
     .offset(offset);
 
-  // console.log(comments);
-
   return { totalCount, comments };
 };
-
-// const getUserById = async (id: number): Promise<Array<IUserDB>> => {
-//   return db.select('*').from('users').where({ id }).returning('*');
-// };
 
 export const commentsRepository = {
   insertComment,
