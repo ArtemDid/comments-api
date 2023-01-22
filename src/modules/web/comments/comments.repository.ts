@@ -11,17 +11,6 @@ type DataUrlsType = {
   is_has_asin: number;
 };
 
-// const getUserByEmailName = async (email: string, user_name?: string): Promise<Array<IUserDB>> => {
-//   return db
-//     .select('*')
-//     .from('users')
-//     .modify((q) => {
-//       q.where({ email });
-//       if (user_name) q.where({ user_name });
-//     })
-//     .returning('*');
-// };
-
 const insertComment = async (data: ICommentDB): Promise<{ totalCount: number; comments: Array<ICommentDB> }> => {
   const log = getLogger();
 
@@ -49,7 +38,7 @@ const getComments = async (
     .limit(limit)
     .offset(offset);
 
-  console.log(comments);
+  // console.log(comments);
 
   return { totalCount, comments };
 };

@@ -6,7 +6,8 @@ import { commentsService } from './comments.service';
 // import { IDomainDB } from '../../../common/db/interfaces/domain.interface';
 
 const postComment = async (req: ExpressRequest, res: ExpressResponse) => {
-  const { totalCount, comments } = await commentsService.insertComment({ ...req.query, users_id: req.users_id });
+  const { text, parent_id, limit, offset } = req.query;
+  const { totalCount, comments } = await commentsService.insertComment(text, parent_id, limit, offset, req.users_id);
 
   return res.status(200).json({
     total_count: totalCount ?? 0,
@@ -15,12 +16,14 @@ const postComment = async (req: ExpressRequest, res: ExpressResponse) => {
 };
 
 const getComment = async (req: ExpressRequest, res: ExpressResponse) => {
-  const user: Array<IUserDB> = await usersRepository.getUserById(req.users_id);
+  const { limit, offset } = req.query;
+
+  const user: Array<IUserDB> = await usersRepository.getUserById(parseInt(req.users_id?.toString(), 10));
 
   if (!user.length) {
     return { status: 401, message: `The credentials is incorrect` };
   }
-  const { totalCount, comments } = await commentsService.getComments(req.query);
+  const { totalCount, comments } = await commentsService.getComments(limit, offset);
 
   return res.status(200).json({
     total_count: totalCount ?? 0,
