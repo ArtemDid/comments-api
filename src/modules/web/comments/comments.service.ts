@@ -5,23 +5,17 @@ import { ICommentDB } from './comments.types';
 import { ExpressResponse } from 'common/types';
 import { generateToken } from '../../common/utils/token.utils';
 
-const insertComment = async (data: any) => {
-  await commentsRepository.insertComment(data);
-  const comments = getComments(data);
+const insertComment = async (text: any, parent_id: any, limit: any, offset: any, users_id: any) => {
+  await commentsRepository.insertComment({ text, parent_id, users_id });
+  const comments = getComments(limit, offset);
   return comments;
 };
 
-const getComments = async (data: any) => {
-  // const { users_id, parent_id, text } = data;
-  // console.log(data);
-  const LIMIT: number = parseInt(data.limit?.toString()) || 25,
-    OFFSET: number = parseInt(data.offset?.toString()) || 0;
-
-  console.log(LIMIT, OFFSET);
+const getComments = async (limit: any, offset: any) => {
+  const LIMIT: number = parseInt(limit?.toString()) || 25,
+    OFFSET: number = parseInt(offset?.toString()) || 0;
 
   const comments = await commentsRepository.getComments(LIMIT, OFFSET);
-
-  // console.log(comments);
 
   comments.comments = getParsedComments(comments.comments);
 
