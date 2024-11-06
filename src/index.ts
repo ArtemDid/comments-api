@@ -41,7 +41,7 @@ async function init() {
     port = 5000;
   }
 
-  _server = serverApp.listen(port, () => {
+  _server = serverApp.listen(port, '0.0.0.0', () => {
     log.info(
       {
         port: PORT,
