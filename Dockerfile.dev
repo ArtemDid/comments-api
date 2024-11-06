@@ -1,0 +1,14 @@
+FROM node:19-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+# Запуск через ts-node-dev или nodemon для горячей перезагрузки
+CMD ["npm", "run", "dev"]
