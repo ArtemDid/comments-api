@@ -21,10 +21,10 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Pull the Docker image
-        run: docker pull ${{ github.event.workflow_run.jobs.build.outputs.image_tag }}
+        run: docker pull ${{ github.event.workflow_run.outputs.image_tag }}
 
       - name: Run the container
-        run: docker run -d -p 3000:3000 ${{ github.event.workflow_run.jobs.build.outputs.image_tag }}
+        run: docker run -d -p 3000:3000 ${{ github.event.workflow_run.outputs.image_tag }}
 
       - name: Wait for the container to be ready
         run: |
