@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: node_ts_app_comments
     ports:
-      - "3003:3001"
+      - "3003:3000"
     env_file:
       - .env
     volumes:

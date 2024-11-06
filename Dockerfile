@@ -20,4 +20,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Команда для запуска приложения
-CMD ["npm", "start"]
+CMD ["./wait-for-it.sh", "db:5432", "--", "npm", "start"]

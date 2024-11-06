@@ -42,7 +42,10 @@ jobs:
         run: docker pull ${{ needs.build.outputs.image_tag }}
 
       - name: Run the container
-        run: docker run -d -p 3000:3000 ${{ needs.build.outputs.image_tag }}
+        run: docker run -d -p 3000:3000 --name my_app_container ${{ needs.build.outputs.image_tag }}
+
+      - name: Show container logs (for debugging)
+        run: docker logs my_app_container || true
 
       - name: Wait for the container to be ready
         run: |
