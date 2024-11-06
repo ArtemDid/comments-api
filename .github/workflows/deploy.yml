@@ -14,10 +14,10 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Pull the Docker image
-        run: docker pull ghcr.io/${{ github.repository_owner }}/my-image-name:latest
+        run: docker pull ghcr.io/comments-api/my-image-name:latest
 
       - name: Run the container
-        run: docker run -d -p 3000:3000 ghcr.io/${{ github.repository_owner }}/my-image-name:latest
+        run: docker run -d -p 3000:3000 ghcr.io/comments-api/my-image-name:latest
 
       - name: Wait for the container to be ready
         run: |
