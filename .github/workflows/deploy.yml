@@ -5,6 +5,7 @@ on:
     workflows: ["Build and Push Image"]
     types:
       - completed
+    conclusion: success
 
 jobs:
   deploy:
@@ -14,10 +15,10 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Pull the Docker image
-        run: docker pull ghcr.io/comments-api/my-image-name:latest
+        run: docker pull my-image-name:$(date +%s)
 
       - name: Run the container
-        run: docker run -d -p 3000:3000 ghcr.io/comments-api/my-image-name:latest
+        run: docker run -d -p 3000:3000 my-image-name:$(date +%s)
 
       - name: Wait for the container to be ready
         run: |
