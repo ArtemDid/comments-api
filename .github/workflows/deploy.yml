@@ -1,0 +1,30 @@
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag my-image-name:latest
+
+      - name: Run the container for testing
+        run: docker run -d -p 3000:3000 my-image-name:latest
+
+      - name: Wait for the container to be ready
+        run: |
+          # Ожидание, пока приложение запустится
+          for i in {1..10}; do
+            if curl --fail http://localhost:3000/healthcheck; then
+              echo "Container is ready!"
+              exit 0
+            fi
+            echo "Waiting for container..."
+            sleep 5
+          done
+          echo "Container did not become ready in time"
+          exit 1
+
+      - name: Run tests
+        run: |
+          curl http://localhost:3000/healthcheck
