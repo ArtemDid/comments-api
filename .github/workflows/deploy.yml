@@ -7,6 +7,12 @@ on:
       - completed
 
 jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialization Step
+        run: echo "Initializing deployment workflow."
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
