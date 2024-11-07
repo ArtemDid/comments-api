@@ -7,8 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-  GITHUB_IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/my-image-name
-  DOCKERHUB_IMAGE_NAME: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/my-image-name
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/my-image-name
 
 jobs:
   build:
@@ -28,20 +27,10 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Log in to Docker Hub
-        env:
-          DOCKER_CLI: "non-interactive"
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Set image name in lowercase
         run: |
-          echo "$DOCKER_HUB_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
-
-      - name: Set image names in lowercase
-        run: |
-          GITHUB_IMAGE_NAME="ghcr.io/${{ github.repository_owner }}/my-image-name"
-          DOCKERHUB_IMAGE_NAME="docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/my-image-name"
-          echo "GITHUB_IMAGE_NAME=${GITHUB_IMAGE_NAME,,}" >> $GITHUB_ENV
-          echo "DOCKERHUB_IMAGE_NAME=${DOCKERHUB_IMAGE_NAME,,}" >> $GITHUB_ENV
+          IMAGE_NAME="ghcr.io/${{ github.repository_owner }}/my-image-name"
+          echo "IMAGE_NAME=${IMAGE_NAME,,}" >> $GITHUB_ENV 
 
       - name: Create .env file from secrets
         run: |
@@ -56,20 +45,13 @@ jobs:
       - name: Build and tag Docker image
         run: |
           docker-compose -f docker-compose.yml build app
-          docker tag node_ts_app_comments:latest $GITHUB_IMAGE_NAME:latest
-          docker tag node_ts_app_comments:latest $GITHUB_IMAGE_NAME:${{ github.sha }}
-          docker tag node_ts_app_comments:latest $DOCKERHUB_IMAGE_NAME:latest
-          docker tag node_ts_app_comments:latest $DOCKERHUB_IMAGE_NAME:${{ github.sha }}
+          docker tag node_ts_app_comments:latest $IMAGE_NAME:latest
+          docker tag node_ts_app_comments:latest $IMAGE_NAME:${{ github.sha }}
 
       - name: Push Docker image to GitHub Container Registry
         run: |
-          docker push $GITHUB_IMAGE_NAME:latest
-          docker push $GITHUB_IMAGE_NAME:${{ github.sha }}
-
-      - name: Push Docker image to Docker Hub
-        run: |
-          docker push $DOCKERHUB_IMAGE_NAME:latest
-          docker push $DOCKERHUB_IMAGE_NAME:${{ github.sha }}
+          docker push $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -81,20 +63,15 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-
       - name: Install Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
-      - name: Set image names in lowercase
+      - name: Set image name in lowercase
         run: |
-          GITHUB_IMAGE_NAME="ghcr.io/${{ github.repository_owner }}/my-image-name"
-          DOCKERHUB_IMAGE_NAME="docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/my-image-name"
-          echo "GITHUB_IMAGE_NAME=${GITHUB_IMAGE_NAME,,}" >> $GITHUB_ENV
-          echo "DOCKERHUB_IMAGE_NAME=${DOCKERHUB_IMAGE_NAME,,}" >> $GITHUB_ENV
+          IMAGE_NAME="ghcr.io/${{ github.repository_owner }}/my-image-name"
+          echo "IMAGE_NAME=${IMAGE_NAME,,}" >> $GITHUB_ENV 
 
       - name: Create .env file from secrets
         run: |
@@ -107,7 +84,7 @@ jobs:
           echo "SECRET=${{ secrets.SECRET }}" >> .env
 
       - name: Pull Docker image from GitHub Container Registry
-        run: docker pull $GITHUB_IMAGE_NAME:latest
+        run: docker pull $IMAGE_NAME:latest
 
       - name: Deploy with Docker Compose
         run: docker-compose -f docker-compose.yml up -d
