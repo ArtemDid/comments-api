@@ -24,6 +24,16 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Create .env file from secrets
+        run: |
+          echo "APP_TYPE=${{ secrets.APP_TYPE }}" >> .env
+          echo "AUTO_MIGRATION=${{ secrets.AUTO_MIGRATION }}" >> .env
+          echo "ENVIRONMENT=${{ secrets.ENVIRONMENT }}" >> .env
+          echo "LOG_NAME_SERVICE=${{ secrets.LOG_NAME_SERVICE }}" >> .env
+          echo "PG_CONNECTION_STRING=${{ secrets.PG_CONNECTION_STRING }}" >> .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "SECRET=${{ secrets.SECRET }}" >> .env
+
       - name: Build and push Docker image
         run: |
           docker-compose -f docker-compose.yml build
