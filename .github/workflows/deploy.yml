@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/my-image-name
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,10 +37,16 @@ jobs:
           echo "PORT=${{ secrets.PORT }}" >> .env
           echo "SECRET=${{ secrets.SECRET }}" >> .env
 
-      - name: Build and push Docker image
+      - name: Build and tag Docker image
         run: |
-          docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml push
+          docker-compose -f docker-compose.yml build app
+          docker tag node_ts_app_comments:latest $IMAGE_NAME:latest
+          docker tag node_ts_app_comments:latest $IMAGE_NAME:${{ github.sha }}
+
+      - name: Push Docker image to GitHub Container Registry
+        run: |
+          docker push $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -64,16 +73,19 @@ jobs:
           echo "PORT=${{ secrets.PORT }}" >> .env
           echo "SECRET=${{ secrets.SECRET }}" >> .env
 
+      - name: Pull Docker image from GitHub Container Registry
+        run: docker pull $IMAGE_NAME:latest
+
       - name: Deploy with Docker Compose
         run: docker-compose -f docker-compose.yml up -d
 
       - name: Show container logs for debugging
-        run: docker-compose logs app
+        run: docker-compose logs app || true
 
       - name: Wait for the container to be ready
         run: |
           for i in {1..10}; do
-            if curl --fail http://localhost:3000/; then
+            if curl --fail http://localhost:${{ secrets.PORT }}/; then
               echo "Container is ready!"
               exit 0
             fi
@@ -81,7 +93,12 @@ jobs:
             sleep 5
           done
           echo "Container did not become ready in time"
+          docker-compose logs app
           exit 1
 
       - name: Run tests
-        run: curl http://localhost:3000/
+        run: curl http://localhost:${{ secrets.PORT }}/
+
+      - name: Clean up
+        if: always()
+        run: docker-compose down
