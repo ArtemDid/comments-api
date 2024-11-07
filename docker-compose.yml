@@ -1,4 +1,5 @@
-version: '3'
+version: '3.8'
+
 services:
   app:
     build:
@@ -15,6 +16,8 @@ services:
       - /app/node_modules
     depends_on:
       - db
+    networks:
+      - app-network
 
   db:
     image: postgres:15
@@ -23,6 +26,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
 
 volumes:
   postgres_data:
