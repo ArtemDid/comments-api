@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: node_ts_app_comments
     ports:
-      - "3003:3000"
+      - "3000:3000"
     env_file:
       - .env
     volumes:
@@ -19,7 +19,7 @@ services:
     image: postgres:15
     container_name: postgres_db_comments
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
