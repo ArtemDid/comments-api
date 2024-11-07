@@ -30,6 +30,7 @@ jobs:
 
       - name: Log in to Docker Hub
         env:
+          DOCKER_CLI: "non-interactive"
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         run: |
