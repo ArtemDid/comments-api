@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: node_ts_app_comments:latest
     container_name: node_ts_app_comments
     ports:
       - "3000:3000"
