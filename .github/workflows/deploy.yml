@@ -67,10 +67,13 @@ jobs:
       - name: Deploy with Docker Compose
         run: docker-compose -f docker-compose.yml up -d
 
+      - name: Show container logs for debugging
+        run: docker-compose logs app
+
       - name: Wait for the container to be ready
         run: |
           for i in {1..10}; do
-            if curl --fail http://localhost:3000/healthcheck; then
+            if curl --fail http://localhost:3000/; then
               echo "Container is ready!"
               exit 0
             fi
@@ -81,4 +84,4 @@ jobs:
           exit 1
 
       - name: Run tests
-        run: curl http://localhost:3000/healthcheck
+        run: curl http://localhost:3000/
