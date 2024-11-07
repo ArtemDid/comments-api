@@ -49,12 +49,27 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Create .env file from secrets
+        run: |
+          echo "APP_TYPE=${{ secrets.APP_TYPE }}" >> .env
+          echo "AUTO_MIGRATION=${{ secrets.AUTO_MIGRATION }}" >> .env
+          echo "ENVIRONMENT=${{ secrets.ENVIRONMENT }}" >> .env
+          echo "LOG_NAME_SERVICE=${{ secrets.LOG_NAME_SERVICE }}" >> .env
+          echo "PG_CONNECTION_STRING=${{ secrets.PG_CONNECTION_STRING }}" >> .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "SECRET=${{ secrets.SECRET }}" >> .env
+
       - name: Deploy with Docker Compose
         run: docker-compose -f docker-compose.yml up -d
 
       - name: Wait for the container to be ready
         run: |
-          for i in {1..20}; do
+          for i in {1..10}; do
             if curl --fail http://localhost:3003/healthcheck; then
               echo "Container is ready!"
               exit 0
